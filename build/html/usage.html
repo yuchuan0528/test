@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; SINFONIA  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorial" href="tutorial/index.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> SINFONIA
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#anndata">AnnData</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release/index.html">Release</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SINFONIA</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><strong>adata</strong>:AnnData object of shape <cite>n_obs`</cite> × <code class="docutils literal notranslate"><span class="pre">n_vars</span></code>. Rows correspond to cells and columns to genes.</p></li>
+<li><p><strong>mode</strong>:Mode for identifying spatially variable genes. By default, mode=’moran_geary’.</p></li>
+<li><p><strong>n_top_genes</strong>:Number of spatially variable genes to keep. By default, n_top_genes=2000.</p></li>
+</ul>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><strong>adata</strong>:AnnData object with identified spatially variable genes and additional fields.</p></li>
+</ul>
+<p>SINFONIA can also be seamlessly integrated with <a class="reference external" href="https://scanpy.readthedocs.io/en/stable/">SCANPY</a>, a widely-used Python library for single-cell data analysis.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scanpy</span> <span class="k">as</span> <span class="nn">sc</span>
+    <span class="kn">import</span> <span class="nn">sinfonia</span>
+    <span class="c1"># Load the spatial transcriptomic data as an AnnData object (adata)</span>
+    <span class="c1"># Normalize and logarithmize if the data contains raw counts</span>
+    <span class="n">sc</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">normalize_total</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+    <span class="n">sc</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+    <span class="c1"># Run SINFONIA</span>
+    <span class="n">adata</span> <span class="o">=</span> <span class="n">sinfonia</span><span class="o">.</span><span class="n">spatially_variable_genes</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="anndata">
+<h2>AnnData<a class="headerlink" href="#anndata" title="Permalink to this headline">¶</a></h2>
+<p>SINFONIA supports <code class="xref py py-mod docutils literal notranslate"><span class="pre">scanpy</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">anndata</span></code>, which provides the <code class="xref py py-class docutils literal notranslate"><span class="pre">AnnData</span></code> class.</p>
+<a class="reference internal image-reference" href="http://falexwolf.de/img/scanpy/anndata.svg"><img alt="http://falexwolf.de/img/scanpy/anndata.svg" src="http://falexwolf.de/img/scanpy/anndata.svg" width="300px" /></a>
+<p>At the most basic level, an <code class="xref py py-class docutils literal notranslate"><span class="pre">AnnData</span></code> object <cite>adata</cite> stores
+a data matrix <cite>adata.X</cite>, annotation of observations
+<cite>adata.obs</cite> and variables <cite>adata.var</cite> as <cite>pd.DataFrame</cite> and unstructured
+annotation <cite>adata.uns</cite> as <cite>dict</cite>. Names of observations and
+variables can be accessed via <cite>adata.obs_names</cite> and <cite>adata.var_names</cite>,
+respectively. <code class="xref py py-class docutils literal notranslate"><span class="pre">AnnData</span></code> objects can be sliced like
+dataframes, for example, <cite>adata_subset = adata[:, list_of_gene_names]</cite>.
+For more, see this <a class="reference external" href="http://falexwolf.de/blog/171223_AnnData_indexing_views_HDF5-backing/">blog post</a>.</p>
+<p>To read a data file to an <code class="xref py py-class docutils literal notranslate"><span class="pre">AnnData</span></code> object, call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scanpy</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="n">adata</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>to initialize an <code class="xref py py-class docutils literal notranslate"><span class="pre">AnnData</span></code> object. Possibly add further annotation using, e.g., <cite>pd.read_csv</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">anno</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_sample_annotation</span><span class="p">)</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;cell_groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">anno</span><span class="p">[</span><span class="s1">&#39;cell_groups&#39;</span><span class="p">]</span>  <span class="c1"># categorical annotation of type pandas.Categorical</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">anno</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span>                <span class="c1"># numerical annotation of type float</span>
+<span class="c1"># alternatively, you could also set the whole dataframe</span>
+<span class="c1"># adata.obs = anno</span>
+</pre></div>
+</div>
+<p>To write, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">write_csvs</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">write_loom</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial/index.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, BioX-NKU.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
